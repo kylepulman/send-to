@@ -1,20 +1,15 @@
 import { Transition } from '@headlessui/react'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import { type MouseEventHandler, type PropsWithChildren, type Ref, useRef, useState } from 'react'
+import { type ChangeEventHandler, type MouseEventHandler, type PropsWithChildren, useState } from 'react'
 import './App.css'
+import { getStorage, setStorage } from '@/lib'
 
 interface InputWithLabelParams {
   name: string
   label: string
   type: 'text'
   placeholder: string
-  ref: Ref<HTMLInputElement>
-}
-
-interface ButtonParams {
-  type: "button" | "submit"
-  label: string
-  onClick: MouseEventHandler<HTMLButtonElement>
+  onChange: ChangeEventHandler<HTMLInputElement>
 }
 
 type InfoBlockParams = PropsWithChildren<{
@@ -22,19 +17,9 @@ type InfoBlockParams = PropsWithChildren<{
     href: string
     label: string
   }
+  show: boolean
+  dismiss: MouseEventHandler<HTMLButtonElement>
 }>
-
-function Button(params: ButtonParams) {
-  return (
-    <button
-      type={params.type}
-      className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-      onClick={params.onClick}
-    >
-      {params.label}
-    </button>
-  )
-}
 
 function InputWithLabel(params: InputWithLabelParams) {
   return (
@@ -47,19 +32,16 @@ function InputWithLabel(params: InputWithLabelParams) {
         name={params.name}
         type={params.type}
         placeholder={params.placeholder}
-        ref={params.ref}
         className="block w-full text-gray-900 placeholder:text-gray-400 focus:outline-none"
+        onChange={params.onChange}
       />
     </div>
   )
 }
 
-
 function InfoBlock(params: InfoBlockParams) {
-  const [isShow, setIsShow] = useState(true)
-
   return (
-    <Transition show={isShow} transition>
+    <Transition show={params.show} transition>
       <div className="rounded-md bg-blue-50 p-4 transition duration-150 ease-in data-closed:opacity-0">
         <div className="flex">
           <div className="shrink-0">
@@ -81,7 +63,7 @@ function InfoBlock(params: InfoBlockParams) {
               <button
                 type="button"
                 className="inline-flex rounded-md bg-blue-50 p-1.5 text-blue-500 hover:bg-blue-100 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-blue-50 focus:outline-hidden"
-                onClick={() => { setIsShow(false) }}
+                onClick={params.dismiss}
               >
                 <span className="sr-only">Dismiss</span>
                 <XMarkIcon aria-hidden="true" className="size-5" />
@@ -95,40 +77,88 @@ function InfoBlock(params: InfoBlockParams) {
 }
 
 export default function App() {
-  const channelIdRef = useRef<HTMLInputElement>(null)
-  const messageRef = useRef<HTMLInputElement>(null)
+  const [prompt, setPrompt] = useState<string>('')
+  const [showHint, setShowHint] = useState<boolean>(false)
+
+  const getInputRef = (id: string) => {
+    const inputRef = document.querySelector<HTMLInputElement>(id)
+
+    if (!inputRef) {
+      throw new Error(`Input ref not found.`)
+    }
+
+    return inputRef
+  }
+
+  void getStorage({
+    channelId: '',
+    message: 'Hello Discord friends! Check out this image: <url>',
+    prompt: '',
+    showHint: false
+  }).then((data) => {
+    getInputRef('#channelId').value = data.channelId
+    getInputRef('#message').value = data.message
+
+    setPrompt(data.prompt)
+    setShowHint(data.showHint)
+  })
+
+  function save() {
+    if (prompt && prompt.length > 0) {
+      setPrompt('')
+
+      void setStorage({
+        prompt: ''
+      }).then(() => {
+        console.log('Prompt nullified!')
+      })
+    }
+
+    void setStorage({
+      channelId: getInputRef('#channelId').value,
+      message: getInputRef('#message').value
+    }).then(() => {
+      console.log('Input saved!')
+    })
+  }
+
+  function dismissHint() {
+    setShowHint(false)
+
+    void setStorage({
+      showHint: false
+    }).then(() => {
+      console.log('Storage set!')
+    })
+  }
 
   return (
     <>
       <div className="p-4 min-w-2xl space-y-2 text-lg">
+        {prompt && <p>{prompt}</p>}
         <div className="-space-y-px">
           <InputWithLabel
             type="text"
             name="channelId"
             label="Channel ID"
             placeholder="1386692968026472512"
-            ref={channelIdRef}
+            onChange={save}
           />
           <InputWithLabel
             type="text"
             name="message"
             label="Message Template"
             placeholder="Hey Discord friends! Check out this image: <url>"
-            ref={messageRef}
+            onChange={save}
           />
         </div>
-        <Button
-          type="button"
-          onClick={() => { console.log('Saved!') }}
-          label="Save"
-        />
-        <InfoBlock>
+        <InfoBlock show={showHint} dismiss={dismissHint}>
           You can find the Discord channel ID by selecting the desired channel and copying the entire string after the final forward slash:
           <br />
           <br />
           <span className='opacity-50'>https://discord.com/channels/1386692967586336960/</span><em className='not-italic'>1386692968026472512</em>
-        </InfoBlock>
-        <InfoBlock>
+          <br />
+          <br />
           <code>{'<url>'}</code> is where the image URL will appear in the message.
         </InfoBlock>
       </div>

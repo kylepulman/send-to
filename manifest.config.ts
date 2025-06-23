@@ -20,5 +20,8 @@ export default defineManifest({
   }],
   background: {
     service_worker: 'src/background.ts'
-  }
+  },
+  permissions: [
+    "storage"
+  ]
 })

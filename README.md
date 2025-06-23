@@ -9,12 +9,12 @@ Send image urls to a Discord channel from a custom context menu option.
 - Tasks
   - [x] (API) Set up a Discord app and bot
   - [x] (API) Write an intermediary endpoint that sends messages to Discord via its API 
-  - [ ] (popup) Get and store information to interact with the intermediary endpoint
-    - [ ] Prompt for information on install (in popup and context menu option)
-    - [ ] Design message template with `url` token
-    - [ ] Display save status indicators
+  - [x] (popup) Get and store information to interact with the intermediary endpoint
+    - [x] Prompt for information on install (in popup and context menu option)
+    - [x] Design message template with `url` token
     - [ ] Validate fields
-  - [ ] (background) Add a custom option to the context menu that sends a request to the intermediate endpoint with the provided information 
+  - [ ] (background) Add a custom option to the context menu that sends a request to the intermediate endpoint with the provided information
+    - [ ] Handle `url` token
     - [ ] Send request status messages to content script
   - [ ] (content) Display a toast message on-page that indicates the status of the request
     - [ ] Make dismissible
@@ -37,7 +37,7 @@ Send image urls to a Discord channel from a custom context menu option.
 - [ ] Send other types of media, including selected text
 - [ ] Implement using the WebExtensions API
 - [ ] Make context menu option title customizable
-- [ ] Advanced configuration in popup form (intermediate API hostname, whether to display toast or not, etc...)
+- [ ] Advanced configuration in popup form (intermediate API hostname, whether to display toast or not, reset hints, etc...)
 
 ## Idea Source
 
