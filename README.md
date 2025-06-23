@@ -21,7 +21,9 @@ Send image urls to a Discord channel from a custom context menu option.
     - [ ] Timeout after success/error
 
 - Flow
-  - Store Discord bot token, channel ID, and message template in the extension via a form in the extension popup
+  - Install Send To bot on a Discord server
+  - Copy Channel ID from url (last path parameter)
+  - Store Discord channel ID and message template in the extension via a form in the extension popup
   - Navigate to an image element and right-click on it to reveal the custom option 
   - Click the custom option, triggering a request to the intermediary endpoint that requests the Discord API
   - Display a toast message on the page that indicates the pending request, then a success or error message  
