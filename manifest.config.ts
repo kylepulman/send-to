@@ -18,4 +18,7 @@ export default defineManifest({
     js: ['src/content/main.tsx'],
     matches: ['https://*/*'],
   }],
+  background: {
+    service_worker: 'src/background.ts'
+  }
 })
