@@ -23,6 +23,8 @@ export default defineManifest({
   },
   permissions: [
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "tabs",
+    "activeTab"
   ]
 })

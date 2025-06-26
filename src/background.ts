@@ -38,6 +38,14 @@ onInstalled(async (details) => {
 
 onContextMenuClick(async (info) => {
   if (info.menuItemId === 'send-to') {
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true })
+
+    if (!tab.id) {
+      throw new Error('Could not locate current tab.')
+    }
+
+    await chrome.tabs.sendMessage(tab.id, { status: 'pending' })
+
     const data = await getStorage({
       channelId: 'undefined',
       message: 'Hello Discord friends! Check out this image: <url>'
@@ -62,6 +70,6 @@ onContextMenuClick(async (info) => {
       })
     })
 
-    console.log(response.ok, response.url)
+    await chrome.tabs.sendMessage(tab.id, { status: response.ok ? "success" : "error" })
   }
 })

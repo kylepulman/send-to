@@ -3,6 +3,10 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
+  chrome.runtime.onMessage.addListener((message: { status: string }) => {
+    console.log('[CRXJS]', message)
+  })
+
   const [show, setShow] = useState(false)
   const toggle = () => { setShow(!show) }
 
