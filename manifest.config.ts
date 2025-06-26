@@ -22,6 +22,7 @@ export default defineManifest({
     service_worker: 'src/background.ts'
   },
   permissions: [
-    "storage"
+    "storage",
+    "contextMenus"
   ]
 })

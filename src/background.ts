@@ -23,4 +23,10 @@ whenInstalled(async (details) => {
   await setStorage(_)
 
   await chrome.action.openPopup()
+
+  chrome.contextMenus.create({
+    title: 'Send to friends on Discord?',
+    contexts: ['image'],
+    id: 'send-to-option'
+  })
 })
