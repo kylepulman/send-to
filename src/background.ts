@@ -1,5 +1,8 @@
 import { getStorage, setStorage } from "./lib"
 
+const HOSTNAME = 'api.kylepulman.com'
+// const HOSTNAME = 'localhost'
+
 function onInstalled(listener: (details: chrome.runtime.InstalledDetails) => Promise<void>) {
   chrome.runtime.onInstalled.addListener((details) => void listener(details))
 }
@@ -36,6 +39,7 @@ onInstalled(async (details) => {
 onContextMenuClick(async (info) => {
   if (info.menuItemId === 'send-to') {
     const data = await getStorage({
+      channelId: 'undefined',
       message: 'Hello Discord friends! Check out this image: <url>'
     })
 
@@ -48,6 +52,16 @@ onContextMenuClick(async (info) => {
 
     const message = data.message.replace('<url>', url)
 
-    console.log(message)
+    const response = await fetch(`http://${HOSTNAME}:3000/discord/messages/${data.channelId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message
+      })
+    })
+
+    console.log(response.ok, response.url)
   }
 })
