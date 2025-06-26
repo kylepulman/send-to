@@ -4,7 +4,6 @@ import { Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import { ArrowPathIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { MouseEventHandler, useState } from 'react'
-import './App.css'
 
 function Notification(params: { status: string, dismiss: MouseEventHandler<HTMLButtonElement> }) {
   return (

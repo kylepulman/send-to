@@ -1,30 +1,7 @@
-import { getStorage, setStorage } from '@/lib'
+import { storage, type ButtonParams, type InfoBlockParams, type Input, type InputParams } from '@/config'
 import { Transition } from '@headlessui/react'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import { type InputEventHandler, type MouseEventHandler, type PropsWithChildren, useEffect, useState } from 'react'
-import './App.css'
-
-interface InputParams {
-  name: string
-  label: string
-  type: 'text'
-  placeholder: string
-  onInput: InputEventHandler<HTMLInputElement>
-}
-
-interface ButtonParams {
-  canSave: boolean
-  onClick: MouseEventHandler<HTMLButtonElement>
-}
-
-type InfoBlockParams = PropsWithChildren<{
-  link?: {
-    href: string
-    label: string
-  }
-  show: boolean
-  dismiss: MouseEventHandler<HTMLButtonElement>
-}>
+import { useEffect, useState } from 'react'
 
 function Input(params: InputParams) {
   return (
@@ -96,8 +73,6 @@ function InfoBlock(params: InfoBlockParams) {
   )
 }
 
-type Input = Record<'channelId' | 'message', string>
-
 export default function App() {
   const [prompt, setPrompt] = useState<string>('')
   const [showHint, setShowHint] = useState<boolean>(false)
@@ -119,31 +94,29 @@ export default function App() {
   }
 
   function save() {
+    const data = storage.defaults
+
     if (prompt && prompt.length > 0) {
       setPrompt('')
 
-      void setStorage({
-        prompt: ''
-      }).then(() => {
-        console.log('Prompt nullified!')
-      })
+      data.prompt = ''
     }
 
-    void setStorage({
-      channelId: input.channelId,
-      message: input.message
-    }).then(() => {
-      console.log('Input saved!')
+    data.channelId = input.channelId
+    data.message = input.message
+    
+    void storage.set({
+      channelId: data.channelId,
+      message: data.message,
+      prompt: data.prompt
     })
   }
 
   function dismissHint() {
     setShowHint(false)
 
-    void setStorage({
+    void storage.set({
       showHint: false
-    }).then(() => {
-      console.log('Storage set!')
     })
   }
 
@@ -155,12 +128,9 @@ export default function App() {
       throw new Error('A reference to an element could not be found.')
     }
 
-    void getStorage({
-      channelId: '',
-      message: 'Hello Discord friends! Check out this image: <url>',
-      prompt: '',
-      showHint: false
-    }).then((data) => {
+    void storage.get().then((data) => {
+      console.log(data)
+
       channelIdRef.value = data.channelId
       messageRef.value = data.message
 

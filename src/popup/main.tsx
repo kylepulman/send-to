@@ -1,10 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
-import './index.css'
+import './main.css'
 
-createRoot(document.getElementById('root')!).render( // eslint-disable-line @typescript-eslint/no-non-null-assertion
+const rootRef = document.querySelector('#root')
+
+if (!rootRef) {
+  throw new Error('Reference to "root" element could not be found at popup.')
+}
+
+createRoot(rootRef).render(
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 )

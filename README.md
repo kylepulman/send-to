@@ -7,18 +7,11 @@ Send web page elements to your friends from a custom context menu option.
 Send image urls to a Discord channel from a custom context menu option.
 
 - Tasks
-  - [x] (API) Set up a Discord app and bot
-  - [x] (API) Write an intermediary endpoint that sends messages to Discord via its API 
-  - [x] (popup) Get and store information to interact with the intermediary endpoint
-    - [x] Prompt for information on install (in popup and context menu option)
-    - [x] Design message template with `url` token
-    - [x] Validate fields
-  - [x] (background) Add a custom option to the context menu that sends a request to the intermediate endpoint with the provided information
-    - [x] Handle `url` token
-    - [x] Send request status messages to content script
-  - [x] (content) Display a toast message on-page that indicates the status of the request
-    - [x] Make dismissible
-    - [x] Timeout after success/error
+  - Popup
+    - [ ] Save indicator
+    - [ ] Validation error indicators
+  - Background
+  - Content
 
 - Flow
   - Install Send To bot on a Discord server
