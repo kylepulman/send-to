@@ -5,7 +5,7 @@ export interface Storage {
   showHint: boolean
 }
 
-export async function getStorage(_: Storage): Promise<Storage> {
+export async function getStorage(_: Partial<Storage>): Promise<Storage> {
   return await chrome.storage.local.get(_)
 }
 

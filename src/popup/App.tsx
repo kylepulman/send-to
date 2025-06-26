@@ -161,8 +161,6 @@ export default function App() {
       prompt: '',
       showHint: false
     }).then((data) => {
-      console.log(data)
-
       channelIdRef.value = data.channelId
       messageRef.value = data.message
 
