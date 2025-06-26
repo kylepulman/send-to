@@ -12,7 +12,7 @@ Send image urls to a Discord channel from a custom context menu option.
   - [x] (popup) Get and store information to interact with the intermediary endpoint
     - [x] Prompt for information on install (in popup and context menu option)
     - [x] Design message template with `url` token
-    - [ ] Validate fields
+    - [x] Validate fields
   - [ ] (background) Add a custom option to the context menu that sends a request to the intermediate endpoint with the provided information
     - [ ] Handle `url` token
     - [ ] Send request status messages to content script

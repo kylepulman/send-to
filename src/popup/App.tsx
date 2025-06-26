@@ -1,15 +1,20 @@
+import { getStorage, setStorage } from '@/lib'
 import { Transition } from '@headlessui/react'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import { type ChangeEventHandler, type MouseEventHandler, type PropsWithChildren, useState } from 'react'
+import { type InputEventHandler, type MouseEventHandler, type PropsWithChildren, useEffect, useState } from 'react'
 import './App.css'
-import { getStorage, setStorage } from '@/lib'
 
-interface InputWithLabelParams {
+interface InputParams {
   name: string
   label: string
   type: 'text'
   placeholder: string
-  onChange: ChangeEventHandler<HTMLInputElement>
+  onInput: InputEventHandler<HTMLInputElement>
+}
+
+interface ButtonParams {
+  canSave: boolean
+  onClick: MouseEventHandler<HTMLButtonElement>
 }
 
 type InfoBlockParams = PropsWithChildren<{
@@ -21,21 +26,36 @@ type InfoBlockParams = PropsWithChildren<{
   dismiss: MouseEventHandler<HTMLButtonElement>
 }>
 
-function InputWithLabel(params: InputWithLabelParams) {
+function Input(params: InputParams) {
   return (
     <div className="first-of-type:rounded-t-md last-of-type:rounded-b-md bg-white px-3 pt-2.5 pb-1.5 outline-1 -outline-offset-1 outline-gray-300 focus-within:relative focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
       <label htmlFor="job-title" className="block font-medium text-gray-900">
         {params.label}
       </label>
-      <input
-        id={params.name}
-        name={params.name}
-        type={params.type}
-        placeholder={params.placeholder}
-        className="block w-full text-gray-900 placeholder:text-gray-400 focus:outline-none"
-        onChange={params.onChange}
-      />
+      <div className="mt-2 grid grid-cols-1">
+        <input
+          id={params.name}
+          name={params.name}
+          type={params.type}
+          placeholder={params.placeholder}
+          className="col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 text-base text-gray-900 placeholder:text-gray-300 focus:outline-0"
+          onInput={params.onInput}
+        />
+      </div>
     </div>
+  )
+}
+
+function Button(params: ButtonParams) {
+  return (
+    <button
+      type="button"
+      onClick={params.onClick}
+      disabled={!params.canSave}
+      className="mt-2 cursor-pointer disabled:cursor-default disabled:bg-indigo-200 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+    >
+      Save
+    </button>
   )
 }
 
@@ -76,32 +96,27 @@ function InfoBlock(params: InfoBlockParams) {
   )
 }
 
+type Input = Record<'channelId' | 'message', string>
+
 export default function App() {
   const [prompt, setPrompt] = useState<string>('')
   const [showHint, setShowHint] = useState<boolean>(false)
+  const [input, setInput] = useState<Input>({
+    channelId: '',
+    message: ''
+  })
 
-  const getInputRef = (id: string) => {
-    const inputRef = document.querySelector<HTMLInputElement>(id)
-
-    if (!inputRef) {
-      throw new Error(`Input ref not found.`)
+  function validate() {
+    if (input.channelId.length === 0 || input.message.length === 0 || !input.message.includes('<url>')) {
+      return false
+    } else {
+      return true
     }
-
-    return inputRef
   }
 
-  void getStorage({
-    channelId: '',
-    message: 'Hello Discord friends! Check out this image: <url>',
-    prompt: '',
-    showHint: false
-  }).then((data) => {
-    getInputRef('#channelId').value = data.channelId
-    getInputRef('#message').value = data.message
-
-    setPrompt(data.prompt)
-    setShowHint(data.showHint)
-  })
+  function typing({ currentTarget }: { currentTarget: HTMLInputElement }) {
+    setInput({ ...input, [currentTarget.name]: currentTarget.value })
+  }
 
   function save() {
     if (prompt && prompt.length > 0) {
@@ -115,8 +130,8 @@ export default function App() {
     }
 
     void setStorage({
-      channelId: getInputRef('#channelId').value,
-      message: getInputRef('#message').value
+      channelId: input.channelId,
+      message: input.message
     }).then(() => {
       console.log('Input saved!')
     })
@@ -132,25 +147,55 @@ export default function App() {
     })
   }
 
+  useEffect(() => {
+    const channelIdRef = document.querySelector<HTMLInputElement>('#channelId')
+    const messageRef = document.querySelector<HTMLInputElement>('#message')
+
+    if (!channelIdRef || !messageRef) {
+      throw new Error('A reference to an element could not be found.')
+    }
+
+    void getStorage({
+      channelId: '',
+      message: 'Hello Discord friends! Check out this image: <url>',
+      prompt: '',
+      showHint: false
+    }).then((data) => {
+      console.log(data)
+
+      channelIdRef.value = data.channelId
+      messageRef.value = data.message
+
+      setInput({
+        channelId: data.channelId,
+        message: data.message
+      })
+
+      setPrompt(data.prompt)
+      setShowHint(data.showHint)
+    })
+  }, [])
+
   return (
     <>
       <div className="p-4 min-w-2xl space-y-2 text-lg">
         {prompt && <p>{prompt}</p>}
         <div className="-space-y-px">
-          <InputWithLabel
+          <Input
             type="text"
             name="channelId"
             label="Channel ID"
             placeholder="1386692968026472512"
-            onChange={save}
+            onInput={typing}
           />
-          <InputWithLabel
+          <Input
             type="text"
             name="message"
             label="Message Template"
             placeholder="Hey Discord friends! Check out this image: <url>"
-            onChange={save}
+            onInput={typing}
           />
+          <Button onClick={save} canSave={validate()} />
         </div>
         <InfoBlock show={showHint} dismiss={dismissHint}>
           You can find the Discord channel ID by selecting the desired channel and copying the entire string after the final forward slash:
