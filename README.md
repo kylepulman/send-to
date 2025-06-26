@@ -16,9 +16,9 @@ Send image urls to a Discord channel from a custom context menu option.
   - [x] (background) Add a custom option to the context menu that sends a request to the intermediate endpoint with the provided information
     - [x] Handle `url` token
     - [x] Send request status messages to content script
-  - [ ] (content) Display a toast message on-page that indicates the status of the request
-    - [ ] Make dismissible
-    - [ ] Timeout after success/error
+  - [x] (content) Display a toast message on-page that indicates the status of the request
+    - [x] Make dismissible
+    - [x] Timeout after success/error
 
 - Flow
   - Install Send To bot on a Discord server

@@ -1,7 +1,9 @@
+@import "tailwindcss";
+
 .popup-container {
-  position: fixed;
+  /* position: fixed;
   right: 0;
-  bottom: 0;
+  top: 0; */
   margin: 1.25rem;
   z-index: 100;
   display: flex;
