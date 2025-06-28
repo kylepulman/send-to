@@ -8,6 +8,8 @@ Send image urls to a Discord channel from a custom context menu option.
 
 ### Usage
 
+- Users must supply an access key in the extension setup. The key is refreshed at a regular cadence and can only be retrieved by emailing the address listed in my GitHub profile
+
 #### Discord Setup
 - [Click here](https://discord.com/oauth2/authorize?client_id=1385257721330143404) to install the "Send To App" Discord app.
 - Grant "Send To App" permission to send messages in the server of your choosing.
@@ -23,7 +25,7 @@ Send image urls to a Discord channel from a custom context menu option.
 - Toggle "Developer mode" `on` in the upper right hand corner of the Extensions page.
 - Click, drag, and drop `release/crx.send.to-*.*.*.zip` onto the Extensions page.
 - The extension popup should appear as soon as the extension is installed with a prompt to enter some information.
-- Enter (or paste) the desired Discord channel ID and edit the message template to your liking. Click "Save" to store the information in the extension.
+- Enter (or paste) the desired Discord channel ID, edit the message template to your liking, and include the access key. Click "Save" to store the information in the extension.
   > The message template must include "\<url\>". This indicates where the URL of the selected image will appear in the sent message.
   
   > Data stored in the extension will live as long as the extension does. When updating the extension, you will be prompted to review the previously stored information. If the extension is removed and re-installed, you must save valid information before using the extension.
@@ -39,7 +41,7 @@ Send image urls to a Discord channel from a custom context menu option.
 
 #### Developer Tasks
   - API
-    - [ ] Currently, anybody that has the channel ID can use the extension to send messages. There needs to be some type of authorization. Maybe on the Discord-side?
+    - [ ] Access token
   - Popup
   - Background
   - Content
@@ -63,6 +65,7 @@ Send image urls to a Discord channel from a custom context menu option.
 - [ ] Make context menu option title customizable
 - [ ] Advanced configuration in popup form (intermediate API hostname, whether to display toast or not, reset hints, etc...)
 - [ ] Send as an authenticated user, instead of bot
+- [ ] Custom auth solution: log in from extension, send as bot
 
 ## Idea Source
 
