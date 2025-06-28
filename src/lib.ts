@@ -36,6 +36,10 @@ export class Message<T> {
   async ext(data: T) {
     await chrome.runtime.sendMessage(data)
   }
+
+  onMessage(listener: (message: T, sender: chrome.runtime.MessageSender, sendResponse: (response?: unknown) => void) => void) {
+    chrome.runtime.onMessage.addListener(listener)
+  }
 }
 
 export class Storage<T> {

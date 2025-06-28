@@ -3,6 +3,11 @@ import { Message, Storage } from './lib'
 
 export const HOSTNAME = 'api.kylepulman.com'
 
+export interface NotificationParams {
+  status: string,
+  dismiss: MouseEventHandler<HTMLButtonElement>
+}
+
 export type Input = Record<'channelId' | 'message', string>
 
 export interface InputParams {
