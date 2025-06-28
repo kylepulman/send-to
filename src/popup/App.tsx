@@ -80,22 +80,20 @@ export default function App() {
     channelId: '',
     message: ''
   })
-  const [saved, setSaved] = useState<boolean | undefined>()
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'saving' | 'invalid'>('idle')
+  
+  function typing({ currentTarget }: { currentTarget: HTMLInputElement }) {
+    setInput({ ...input, [currentTarget.name]: currentTarget.value })
 
-  function validate() {
-    if (input.channelId.length === 0 || input.message.length === 0 || !input.message.includes('<url>')) {
-      return false
+    if (currentTarget.value.length === 0 || currentTarget.name === 'message' && !currentTarget.value.includes('<url>')) {
+      setSaveStatus('invalid')
     } else {
-      return true
+      setSaveStatus('idle')
     }
   }
 
-  function typing({ currentTarget }: { currentTarget: HTMLInputElement }) {
-    setInput({ ...input, [currentTarget.name]: currentTarget.value })
-  }
-
   function save() {
-    setSaved(false)
+    setSaveStatus('saving')
 
     const data = storage.defaults
 
@@ -107,14 +105,14 @@ export default function App() {
 
     data.channelId = input.channelId
     data.message = input.message
-    
+
     void storage.set({
       channelId: data.channelId,
       message: data.message,
       prompt: data.prompt
     })
 
-    setSaved(true)
+    setSaveStatus('saved')
   }
 
   function dismissHint() {
@@ -167,9 +165,10 @@ export default function App() {
             onInput={typing}
           />
           <div className="flex items-center gap-2 mt-2">
-            <Button onClick={save} canSave={validate()} />
-            {saved === true && <p className='m-0 leading-0 text-gray-600'>Saved!</p>}
-            {saved === false && <p className='m-0 leading-0 text-gray-600'>Saving...</p>}
+            <Button onClick={save} canSave={saveStatus !== 'invalid'} />
+            {saveStatus === 'saved' && <p className='m-0 leading-0 text-gray-600'>Saved!</p>}
+            {saveStatus === 'saving' && <p className='m-0 leading-0 text-gray-600'>Saving...</p>}
+            {saveStatus === 'invalid' && <p className='m-0 leading-0 text-red-600'>Please check that all fields are valid before saving.</p>}
           </div>
         </div>
         <InfoBlock show={showHint} dismiss={dismissHint}>

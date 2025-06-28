@@ -3,7 +3,7 @@ import { createContextMenuOption, onContextMenuClick, onInstalled, openPopup } f
 
 async function initPrompt(onInstalledReason: chrome.runtime.InstalledDetails['reason']) {
   const data = await storage.get()
-  
+
   if (onInstalledReason === 'install') {
     data.prompt = 'Congratulations on installing this extension! Please save the following information to use it.'
   } else {
@@ -37,9 +37,9 @@ async function sendRequest(channelId: string, message: string) {
 
 onInstalled(async (details) => {
   await initPrompt(details.reason)
-  
+
   await openPopup()
-  
+
   createContextMenuOption(
     'Send to friends on Discord?',
     ['image'],
