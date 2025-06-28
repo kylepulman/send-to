@@ -32,6 +32,12 @@ async function sendRequest(channelId: string, message: string) {
     })
   })
 
+  const result = await response.json() as Record<string, unknown>
+
+  if ('message' in result && 'code' in result) {
+    return false
+  }
+
   return response.ok
 }
 
