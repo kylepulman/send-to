@@ -40,10 +40,14 @@ Send image urls to a Discord channel from a custom context menu option.
 - On a successful request, you should see the message template with the image's URL posted in the desired channel by "send-to-bot".
 
 #### Developer Tasks
+
   - API
-    - [x] Access token
+    - [ ] Error format
   - Popup
+    - [ ] Validate initial empty input value on save
+    - [ ] Channel ID invalid if not all numbers
   - Background
+    - [ ] Context menu option opens popup with prompt if invalid values
   - Content
 
 #### Usage Flow

@@ -44,11 +44,11 @@ export const storage = new Storage<{
   showHint: boolean
   key: string
 }>({
-  channelId: '0000000000000000000',
+  channelId: 'channel-id-here',
   message: 'Hello Discord friends! Check out this image: <url>',
   prompt: '',
   showHint: true,
-  key: ''
+  key: 'access-key-here'
 })
 
 export const sendStatus = new Message<{ status: 'idle' | 'pending' | 'success' | 'error' }>({
