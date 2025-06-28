@@ -8,8 +8,7 @@ Send image urls to a Discord channel from a custom context menu option.
 
 - Tasks
   - Popup
-    - [ ] Save indicator
-    - [ ] Validation error indicators
+    - [x] Save indicator
   - Background
   - Content
 

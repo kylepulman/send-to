@@ -29,7 +29,7 @@ function Button(params: ButtonParams) {
       type="button"
       onClick={params.onClick}
       disabled={!params.canSave}
-      className="mt-2 cursor-pointer disabled:cursor-default disabled:bg-indigo-200 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      className="cursor-pointer disabled:cursor-default disabled:bg-indigo-200 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
       Save
     </button>
@@ -80,6 +80,7 @@ export default function App() {
     channelId: '',
     message: ''
   })
+  const [saved, setSaved] = useState<boolean | undefined>()
 
   function validate() {
     if (input.channelId.length === 0 || input.message.length === 0 || !input.message.includes('<url>')) {
@@ -94,6 +95,8 @@ export default function App() {
   }
 
   function save() {
+    setSaved(false)
+
     const data = storage.defaults
 
     if (prompt && prompt.length > 0) {
@@ -110,6 +113,8 @@ export default function App() {
       message: data.message,
       prompt: data.prompt
     })
+
+    setSaved(true)
   }
 
   function dismissHint() {
@@ -129,8 +134,6 @@ export default function App() {
     }
 
     void storage.get().then((data) => {
-      console.log(data)
-
       channelIdRef.value = data.channelId
       messageRef.value = data.message
 
@@ -163,7 +166,11 @@ export default function App() {
             placeholder="Hey Discord friends! Check out this image: <url>"
             onInput={typing}
           />
-          <Button onClick={save} canSave={validate()} />
+          <div className="flex items-center gap-2 mt-2">
+            <Button onClick={save} canSave={validate()} />
+            {saved === true && <p className='m-0 leading-0 text-gray-600'>Saved!</p>}
+            {saved === false && <p className='m-0 leading-0 text-gray-600'>Saving...</p>}
+          </div>
         </div>
         <InfoBlock show={showHint} dismiss={dismissHint}>
           You can find the Discord channel ID by selecting the desired channel and copying the entire string after the final forward slash:
