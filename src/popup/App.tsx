@@ -1,7 +1,17 @@
-import { storage, type ButtonParams, type InfoBlockParams, type Input, type InputParams } from '@/config'
-import { Transition } from '@headlessui/react'
-import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import { useEffect, useState } from 'react'
+import {
+  storage,
+  type ButtonParams,
+  type InfoBlockParams,
+  type Input,
+  type InputParams
+} from '@/config'
+import {
+  InformationCircleIcon,
+  Transition,
+  useEffect,
+  useState,
+  XMarkIcon
+} from '@/lib'
 
 function Input(params: InputParams) {
   return (
@@ -81,7 +91,7 @@ export default function App() {
     message: ''
   })
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'saving' | 'invalid'>('idle')
-  
+
   function typing({ currentTarget }: { currentTarget: HTMLInputElement }) {
     setInput({ ...input, [currentTarget.name]: currentTarget.value })
 

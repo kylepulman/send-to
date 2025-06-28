@@ -1,10 +1,25 @@
 'use client'
 
-import { NotificationParams, sendStatus } from '@/config'
 import { Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
-import { ArrowPathIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
+import {
+  ArrowPathIcon,
+  CheckCircleIcon,
+  ExclamationCircleIcon
+} from '@heroicons/react/24/outline'
+import {
+  type MouseEventHandler,
+  useState
+} from 'react'
+
+interface NotificationParams {
+  status: string,
+  dismiss: MouseEventHandler<HTMLButtonElement>
+}
+
+interface Message {
+  status: 'idle' | 'pending' | 'success' | 'error'
+}
 
 function Notification(params: NotificationParams) {
   return (
@@ -47,7 +62,7 @@ function Notification(params: NotificationParams) {
 function App() {
   const [status, setStatus] = useState('idle')
 
-  sendStatus.onMessage((message) => {
+  chrome.runtime.onMessage.addListener((message: Message) => {
     setStatus(message.status)
 
     setTimeout(() => { setStatus('idle') }, 10 * 1000)

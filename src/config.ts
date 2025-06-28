@@ -1,5 +1,10 @@
-import { type InputEventHandler, type MouseEventHandler, type PropsWithChildren } from 'react'
-import { Message, Storage } from './lib'
+import {
+  Message,
+  Storage,
+  type InputEventHandler,
+  type MouseEventHandler,
+  type PropsWithChildren
+} from './lib'
 
 export const HOSTNAME = 'api.kylepulman.com'
 
@@ -38,7 +43,7 @@ export const storage = new Storage<{
   prompt: string
   showHint: boolean
 }>({
-  channelId: '',
+  channelId: '0000000000000000000',
   message: 'Hello Discord friends! Check out this image: <url>',
   prompt: '',
   showHint: true

@@ -1,7 +1,7 @@
 import { HOSTNAME, sendStatus, storage } from "./config"
-import { createContextMenuOption, onContextMenuClick, onInstalled, openPopup } from "./lib"
+import { createContextMenuOption, type InstalledDetails, onContextMenuClick, onInstalled, openPopup } from "./lib"
 
-async function initPrompt(onInstalledReason: chrome.runtime.InstalledDetails['reason']) {
+async function initPrompt(onInstalledReason: InstalledDetails['reason']) {
   const data = await storage.get()
 
   if (onInstalledReason === 'install') {
@@ -40,11 +40,11 @@ onInstalled(async (details) => {
 
   await openPopup()
 
-  createContextMenuOption(
-    'Send to friends on Discord?',
-    ['image'],
-    'send-to'
-  )
+  createContextMenuOption({
+    title: 'Send to friends on Discord?',
+    contexts: ['image'],
+    id: 'send-to'
+  })
 })
 
 onContextMenuClick(async (info) => {

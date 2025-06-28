@@ -1,12 +1,10 @@
-export function openPopup() {
-  return chrome.action.openPopup()
-}
+// Chrome
+export type InstalledDetails = chrome.runtime.InstalledDetails
 
-export function createContextMenuOption(title: string, contexts: (chrome.contextMenus.ContextType)[], id: string) {
-  chrome.contextMenus.create({ title, contexts, id })
-}
+export const openPopup = chrome.action.openPopup
+export const createContextMenuOption = chrome.contextMenus.create
 
-export function onInstalled(listener: (details: chrome.runtime.InstalledDetails) => Promise<void>) {
+export function onInstalled(listener: (details: InstalledDetails) => Promise<void>) {
   chrome.runtime.onInstalled.addListener((details) => void listener(details))
 }
 
@@ -37,7 +35,11 @@ export class Message<T> {
     await chrome.runtime.sendMessage(data)
   }
 
-  onMessage(listener: (message: T, sender: chrome.runtime.MessageSender, sendResponse: (response?: unknown) => void) => void) {
+  onMessage(listener: (
+    message: T,
+    sender: chrome.runtime.MessageSender,
+    sendResponse: (response?: unknown) => void
+  ) => void) {
     chrome.runtime.onMessage.addListener(listener)
   }
 }
@@ -52,4 +54,51 @@ export class Storage<T> {
   async set(input: Partial<T>) {
     await chrome.storage.local.set(input)
   }
+}
+
+// React
+import {
+  StrictMode,
+  useEffect,
+  useState,
+  type InputEventHandler,
+  type MouseEventHandler,
+  type PropsWithChildren
+} from 'react'
+
+import { createRoot } from 'react-dom/client'
+
+export {
+  createRoot,
+  StrictMode,
+  useEffect,
+  useState,
+  type InputEventHandler,
+  type MouseEventHandler,
+  type PropsWithChildren
+}
+
+// Headless UI
+import { Transition } from '@headlessui/react'
+
+export { Transition }
+
+// Heroicons
+import {
+  InformationCircleIcon,
+  XMarkIcon
+} from '@heroicons/react/20/solid'
+import {
+  ArrowPathIcon,
+  CheckCircleIcon,
+  ExclamationCircleIcon
+} from '@heroicons/react/24/outline'
+
+
+export {
+  ArrowPathIcon,
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  InformationCircleIcon,
+  XMarkIcon
 }
