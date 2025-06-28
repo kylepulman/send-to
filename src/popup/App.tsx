@@ -88,7 +88,8 @@ export default function App() {
   const [showHint, setShowHint] = useState<boolean>(false)
   const [input, setInput] = useState<Input>({
     channelId: '',
-    message: ''
+    message: '',
+    key: ''
   })
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'saving' | 'invalid'>('idle')
 
@@ -115,11 +116,13 @@ export default function App() {
 
     data.channelId = input.channelId
     data.message = input.message
+    data.key = input.key
 
     void storage.set({
       channelId: data.channelId,
       message: data.message,
-      prompt: data.prompt
+      prompt: data.prompt,
+      key: data.key
     })
 
     setSaveStatus('saved')
@@ -136,18 +139,21 @@ export default function App() {
   useEffect(() => {
     const channelIdRef = document.querySelector<HTMLInputElement>('#channelId')
     const messageRef = document.querySelector<HTMLInputElement>('#message')
+    const keyRef = document.querySelector<HTMLInputElement>('#key')
 
-    if (!channelIdRef || !messageRef) {
+    if (!channelIdRef || !messageRef || !keyRef) {
       throw new Error('A reference to an element could not be found.')
     }
 
     void storage.get().then((data) => {
       channelIdRef.value = data.channelId
       messageRef.value = data.message
+      keyRef.value = data.key
 
       setInput({
         channelId: data.channelId,
-        message: data.message
+        message: data.message,
+        key: data.key
       })
 
       setPrompt(data.prompt)
@@ -172,6 +178,13 @@ export default function App() {
             name="message"
             label="Message Template"
             placeholder="Hey Discord friends! Check out this image: <url>"
+            onInput={typing}
+          />
+          <Input
+            type="text"
+            name="key"
+            label="Access Key"
+            placeholder=""
             onInput={typing}
           />
           <div className="flex items-center gap-2 mt-2">

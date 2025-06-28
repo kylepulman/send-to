@@ -21,22 +21,30 @@ function buildEndpointUrl(channelId: string) {
   return `http://${HOSTNAME}:3000/discord/messages/${channelId}`
 }
 
-async function sendRequest(channelId: string, message: string) {
+async function sendRequest(channelId: string, message: string, key: string) {
   const response = await fetch(buildEndpointUrl(channelId), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      authorization: `Key ${key}`
     },
     body: JSON.stringify({
       message
     })
   })
 
-  const result = await response.json() as Record<string, unknown>
+  const result = await response.text()
 
-  if ('message' in result && 'code' in result) {
-    return false
+  try {
+    const parsedResult = JSON.parse(result) as Record<string, unknown>
+
+    if ('message' in parsedResult && 'code' in parsedResult) {
+      return false
+    }
+  } catch (_err) {
+    return false        
   }
+
 
   return response.ok
 }
@@ -69,7 +77,7 @@ onContextMenuClick(async (info) => {
 
   const message = buildMessage(data.message, info.srcUrl)
 
-  const ok = await sendRequest(data.channelId, message)
+  const ok = await sendRequest(data.channelId, message, data.key)
 
   await sendStatus.tab({ status: ok ? "success" : "error" }, tabId)
 })

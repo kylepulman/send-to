@@ -37,7 +37,7 @@ function Notification(params: NotificationParams) {
                 <div className="ml-3 w-0 flex-1 pt-0.5">
                   {params.status === 'pending' && <p className="text-sm font-medium text-gray-900">Sending to your friends on Discord...</p>}
                   {params.status === 'success' && <p className="text-sm font-medium text-gray-900">Message sent!</p>}
-                  {params.status === 'error' && <p className="text-sm font-medium text-gray-900">The message could not be sent, please check that the channel ID is valid and that you have the Send To App installed on the channel's server.</p>}
+                  {params.status === 'error' && <p className="text-sm font-medium text-gray-900">The message could not be sent, please check that the channel ID and access key is valid and that you have the Send To App installed on the channel's server.</p>}
 
                 </div>
                 <div className="ml-4 flex shrink-0">

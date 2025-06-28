@@ -13,7 +13,7 @@ export interface NotificationParams {
   dismiss: MouseEventHandler<HTMLButtonElement>
 }
 
-export type Input = Record<'channelId' | 'message', string>
+export type Input = Record<'channelId' | 'message' | 'key', string>
 
 export interface InputParams {
   name: string
@@ -42,11 +42,13 @@ export const storage = new Storage<{
   message: string
   prompt: string
   showHint: boolean
+  key: string
 }>({
   channelId: '0000000000000000000',
   message: 'Hello Discord friends! Check out this image: <url>',
   prompt: '',
-  showHint: true
+  showHint: true,
+  key: ''
 })
 
 export const sendStatus = new Message<{ status: 'idle' | 'pending' | 'success' | 'error' }>({
