@@ -7,49 +7,53 @@ Send web page elements to your friends from a custom context menu option.
 Send image urls to a Discord channel from a custom context menu option.
 
 ### Usage
-
-- Users must supply an access key in the extension setup. The key is refreshed at a regular cadence and can only be retrieved by emailing the address listed in my GitHub profile
+> [!IMPORTANT]
+> Users must supply an access key in the extension setup. The key is refreshed at a regular cadence and can only be retrieved by emailing the address listed in my GitHub profile.
 
 #### Discord Setup
-- [Click here](https://discord.com/oauth2/authorize?client_id=1385257721330143404) to install the "Send To App" Discord app.
-- Grant "Send To App" permission to send messages in the server of your choosing.
-- Authorizing and installing "Send To App" will install a bot user "send-to-bot" to the selected server. You can verify that the installation was successful by checking for a welcome message for "send-to-bot" in the server's general text chat channel.
-- The "Send To" extension will need the ID of the channel where "send-to-bot" will send messages. Navigate to the desired channel, and in the address bar, select and copy the entire string immediately after the final forward slash.
-  >Select and copy only the emboldened portion of the URL.
-  >
-  >https://discord.com/channels/1386692967586336960/**1386692968026472512**
+  - [Click here](https://discord.com/oauth2/authorize?client_id=1385257721330143404) to install the "Send To App" Discord app.
+  - Grant "Send To App" permission to send messages in the server of your choosing.
+  - Authorizing and installing "Send To App" will install a bot user "send-to-bot" to the selected server. You can verify that the installation was successful by checking for a welcome message for "send-to-bot" in the server's general text chat channel.
+  - The "Send To" extension will need the ID of the channel where "send-to-bot" will send messages. Navigate to the desired channel, and in the address bar, select and copy the entire string immediately after the final forward slash.
+> [!TIP]
+> In the address bar, select and copy only the emboldened portion of the URL.
+>
+> *discord.com/channels/1386692967586336960/__1386692968026472512__*
 
 #### Extension Setup
-- In a Chrome browser window, click the puzzle piece icon ("Extensions") that is just right of the address bar.
-- Click "Manage Extensions" at the bottom of the list.
-- Toggle "Developer mode" `on` in the upper right hand corner of the Extensions page.
-- Click, drag, and drop `release/crx.send.to-*.*.*.zip` onto the Extensions page.
-- The extension popup should appear as soon as the extension is installed with a prompt to enter some information.
-- Enter (or paste) the desired Discord channel ID, edit the message template to your liking, and include the access key. Click "Save" to store the information in the extension.
-  > The message template must include "\<url\>". This indicates where the URL of the selected image will appear in the sent message.
-  
-  > Data stored in the extension will live as long as the extension does. When updating the extension, you will be prompted to review the previously stored information. If the extension is removed and re-installed, you must save valid information before using the extension.
+  - In a Chrome browser window, click the puzzle piece icon ("Extensions") that is just right of the address bar.
+  - Click "Manage Extensions" at the bottom of the list.
+  - Toggle "Developer mode" `on` in the upper right hand corner of the Extensions page.
+  - Click, drag, and drop `release/crx.send.to-*.*.*.zip` onto the Extensions page.
+  - The extension popup should appear as soon as the extension is installed with a prompt to enter some information.
+  - Enter (or paste) the desired Discord channel ID, edit the message template to your liking, and include the access key. Click "Save" to store the information in the extension.
+> [!IMPORTANT]
+> The message template must include "\<url\>". This indicates where the URL of the selected image will appear in the sent message.
+
+> [!NOTE]
+> Data stored in the extension will live as long as the extension does. When updating the extension, you will be prompted to review the previously stored information. If the extension is removed and re-installed, you must save valid information before using the extension.
 
 #### Extension Usage
-- Find an image on a web page and right-click on it
-- Click the custom menu option titled "Send to your friends on Discord?"
-- In the upper-right corner of the page, you should see an alert indicating that the message is sending, has sent successfully, or could not be sent due to an error.
-  > If you do not see the custom menu option, try refreshing the page. If you still don't see the option, ensure that you are right-clicking a valid HTML image element (`<img>`).
-
-  > If you get an error alert, the most likely cause is an invalid channel ID. Ensure that you have successfully installed the "Send To App" to your server, that the bot user "send-to-bot" appears in the server, and that the channel ID is a valid, and that the channel belongs to a server where the bot has permission to send messages.
+  - Find an image on a web page and right-click on it.
+  - Click the custom menu option titled "Send to your friends on Discord?"
+  - In the upper-right corner of the page, you should see an alert indicating that the message is sending, has sent successfully, or could not be sent due to an error.
+> [!TIP]
+> If you do not see the custom menu option, try refreshing the page. If you still don't see the option, ensure that you are right-clicking a valid HTML image element (`<img>`).
+>
+> If you get an error alert, the most likely cause is an invalid channel ID. Ensure that you have successfully installed the "Send To App" to your server, that the bot user "send-to-bot" appears in the server, and that the channel ID is a valid, and that the channel belongs to a server where the bot has permission to send messages.
 - On a successful request, you should see the message template with the image's URL posted in the desired channel by "send-to-bot".
 
 #### Developer Tasks
 
+  - [ ] Review README formatting on GitHub page
+  - [ ] Final polish
+  - [ ] Write case study
+  - [ ] Store release archive somewhere
   - API
-    - [x] Error format
-    - [x] Error result on a successful request
   - Popup
-    - [x] Validate initial empty input value on save
-    - [x] Channel ID invalid if not all numbers
-    - [x] Popup closes on blur, which means focusing another window to copy a value causes you to lose all input values
   - Background
   - Content
+    - [ ] Toast styles converge with page styles on some websites (see Reddit)
 
 #### Usage Flow
   - Install Send To bot on a Discord server
@@ -62,13 +66,13 @@ Send image urls to a Discord channel from a custom context menu option.
 
 ## Wishlist
 
-- [ ] Send using to Google Messages for Web
+- [ ] Send using Google Messages for Web
 - [ ] Send files instead of URLs
 - [ ] Store files locally
 - [ ] Send other types of media, including selected text
 - [ ] Implement using the WebExtensions API
 - [ ] Make context menu option title customizable
-- [ ] Advanced configuration in popup form (intermediate API hostname, whether to display toast or not, reset hints, etc...)
+- [ ] Advanced configuration in popup form (whether to display toast or not, reset hints, etc...)
 - [ ] Send as an authenticated user, instead of bot
 - [ ] Custom auth solution: log in from extension, send as bot
 
