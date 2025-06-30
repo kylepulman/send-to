@@ -1,5 +1,5 @@
 import { HOSTNAME, sendStatus, storage } from "./config"
-import { createContextMenuOption, type InstalledDetails, onContextMenuClick, onInstalled, openPopup } from "./lib"
+import { createContextMenuOption, type InstalledDetails, onActionClick, onContextMenuClick, onInstalled } from "./lib"
 
 async function initPrompt(onInstalledReason: InstalledDetails['reason']) {
   const data = await storage.get()
@@ -40,10 +40,18 @@ async function sendRequest(channelId: string, message: string, key: string) {
   return response.ok
 }
 
+async function openPopupInTab() {
+  await chrome.tabs.create({ url: 'src/popup/main.html' })
+}
+
+onActionClick(async () => {
+  await openPopupInTab()
+})
+
 onInstalled(async (details) => {
   await initPrompt(details.reason)
 
-  await openPopup()
+  await openPopupInTab()
 
   createContextMenuOption({
     title: 'Send to friends on Discord?',

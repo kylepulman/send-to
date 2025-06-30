@@ -8,6 +8,13 @@ import { name, version } from './package.json'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        popupTab: 'src/popup/main.html'
+      } 
+    }
+  },
   resolve: {
     alias: {
       '@': `${path.resolve(__dirname, 'src')}`,

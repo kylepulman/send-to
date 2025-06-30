@@ -12,7 +12,7 @@ export default defineManifest({
     default_icon: {
       48: 'public/logo.png',
     },
-    default_popup: 'src/popup/main.html',
+    // default_popup: 'src/popup/main.html',
   },
   content_scripts: [{
     js: ['src/content/main.tsx'],

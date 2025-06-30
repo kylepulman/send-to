@@ -12,6 +12,10 @@ export function onContextMenuClick(listener: (info: chrome.contextMenus.OnClickD
   chrome.contextMenus.onClicked.addListener((info) => void listener(info))
 }
 
+export function onActionClick(listener: (tab: chrome.tabs.Tab) => Promise<void>) {
+  chrome.action.onClicked.addListener((tab) => void listener(tab))
+}
+
 export class Message<T> {
   constructor(public defaults: T) { }
 

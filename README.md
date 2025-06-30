@@ -47,7 +47,7 @@ Send image urls to a Discord channel from a custom context menu option.
   - Popup
     - [x] Validate initial empty input value on save
     - [x] Channel ID invalid if not all numbers
-    - [ ] Popup closes on blur, which means focusing another window to copy a value causes you to lose all input values
+    - [x] Popup closes on blur, which means focusing another window to copy a value causes you to lose all input values
   - Background
   - Content
 
