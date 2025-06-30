@@ -104,7 +104,16 @@ export default function App() {
   }
 
   function save() {
-    setSaveStatus('saving')
+    if (
+      !input.channelId || input.channelId.length === 0 ||
+      !input.message || input.message.length === 0 ||
+      !input.key || input.key.length === 0) {
+      setSaveStatus('invalid')
+
+      return
+    } else {
+      setSaveStatus('saving')
+    }
 
     const data = storage.defaults
 
@@ -184,7 +193,7 @@ export default function App() {
             type="text"
             name="key"
             label="Access Key"
-            placeholder=""
+            placeholder="secret-access-key-here"
             onInput={typing}
           />
           <div className="flex items-center gap-2 mt-2">

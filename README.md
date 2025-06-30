@@ -42,9 +42,9 @@ Send image urls to a Discord channel from a custom context menu option.
 #### Developer Tasks
 
   - API
-    - [ ] Error format
+    - [x] Error format
   - Popup
-    - [ ] Validate initial empty input value on save
+    - [x] Validate initial empty input value on save
     - [ ] Channel ID invalid if not all numbers
   - Background
     - [ ] Context menu option opens popup with prompt if invalid values

@@ -8,6 +8,11 @@ import {
 
 export const HOSTNAME = 'api.kylepulman.com'
 
+export interface KyleErrorT extends Error {
+  status: 200 | 400 | 401 | 500,
+  external?: string | object
+}
+
 export interface NotificationParams {
   status: string,
   dismiss: MouseEventHandler<HTMLButtonElement>
@@ -44,11 +49,11 @@ export const storage = new Storage<{
   showHint: boolean
   key: string
 }>({
-  channelId: 'channel-id-here',
+  channelId: '',
   message: 'Hello Discord friends! Check out this image: <url>',
   prompt: '',
   showHint: true,
-  key: 'access-key-here'
+  key: ''
 })
 
 export const sendStatus = new Message<{ status: 'idle' | 'pending' | 'success' | 'error' }>({
