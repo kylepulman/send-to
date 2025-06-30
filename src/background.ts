@@ -35,7 +35,7 @@ async function sendRequest(channelId: string, message: string, key: string) {
 
   const result = await response.json() as unknown
 
-  console.log(result)
+  console.log(result, response.status)
 
   return response.ok
 }
