@@ -18,7 +18,7 @@ function buildMessage(message: string, url: string) {
 }
 
 function buildEndpointUrl(channelId: string) {
-  return `http://${HOSTNAME}:3000/discord/messages/${channelId}`
+  return `https://${HOSTNAME}/discord/messages/${channelId}`
 }
 
 async function sendRequest(channelId: string, message: string, key: string) {
