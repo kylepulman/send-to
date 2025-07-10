@@ -26,7 +26,7 @@ async function sendRequest(channelId: string, message: string, key: string) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      authorization: `Key ${key}`
+      authorization: key
     },
     body: JSON.stringify({
       message
